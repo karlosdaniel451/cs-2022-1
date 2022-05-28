@@ -43,3 +43,38 @@ e definições do padrão REST, pode ser chamada
 de API REST e serviço Web que a implementa,
 Serviço Web Restful.
 
+O padrão REST foi apresentando na dissertação de
+Mestrado do cientista da computação Roy Fielding
+em 2000. Não coincidentemente, Fielding também
+foi um dos principais autores da especificação
+do protocolo de aplicação HTTP.
+
+Os critérios para que uma API Web seja considerada
+uma API REST são:
+
+- Ter uma arquitetura cliente-servidor sem estado,
+na qual o cliente navega por um conjunto de recursos
+gerenciados pelo servidor. Recurso, no contexto
+de APIs REST, significa qualquer informação,
+como imagens, documentos ou um registro em um
+banco de dados. Como a comunicação deve ser sem
+estado (*stateless*), logo cada requisição enviada
+pelo cliente é autocontida e o servidor não armazena
+informação sobre o cliente quando elas ocorrem.
+
+- Cada recurso deve ser identificado unicamente e
+deve ter uma representação uniforme quando seu
+estado é trocado entre o cliente e o servidor.
+
+- Cada recurso deve possuir descrições, ou metadados,
+além de possíveis ações que o cliente pode executar nele.
+
+- O cliente deve necessitar apenas da URL inicial do
+servidor Web, logo deve ser capaz de navegar entre
+qualquer recurso através de hyperlinks.
+
+### Referências:
+
+- What is REST - REST API Tutorial. Disponível em <https://restfulapi.net/>.
+- What is a REST API? Disponível em <https://www.redhat.com/en/topics/api/what-is-a-rest-api>.
+
