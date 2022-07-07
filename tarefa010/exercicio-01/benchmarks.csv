@@ -1,0 +1,7 @@
+length, ms to sort with iterative_quicksort, ms to sort with iterative_quicksort
+100,iterative quicksort,1e-05
+1000,iterative quicksort,7.6e-05
+10000,iterative quicksort,0.000989
+100,recursive quicksort,0.000111
+1000,recursive quicksort,0.001546
+10000,recursive quicksort,0.019714
