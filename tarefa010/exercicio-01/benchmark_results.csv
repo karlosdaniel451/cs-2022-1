@@ -1,0 +1,4 @@
+length,ms to sort with iterative quicksort,ms to sort with recursive quicksort
+100,0.196,0.699
+1000,2.846,68.061
+10000,38.012,6808.935
