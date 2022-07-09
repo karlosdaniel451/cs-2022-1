@@ -33,3 +33,4 @@ def _recursive_quicksort(numbers: list[int], left: int, right: int):
 
 def quicksort(numbers: list[int]):
     _recursive_quicksort(numbers, 0, len(numbers) - 1)
+
