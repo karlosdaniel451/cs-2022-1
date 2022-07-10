@@ -168,7 +168,117 @@ Only actual code should be reindented.
 
 
 ## Padrão Reflexão
-TODO
+
+**Reflexão**, em inglês *Reflection*, é um padrão arquitetural que fornece um mecanismo para mudar as propriedades e
+comportamentos de um programa dinamicamente, isto é, em tempo de execução. Neste padrão, a aplicação é dividia logicamente
+em dois níveis:
+
+- **Meta level**: fornece informações sobre o propriedades da aplicação em tempo de execução.
+- **Base level**: fornece a lógica da aplicação e é construída sobre o meta level de modo que responda às mudanças ocorridas em tal nível.
+
+Um conceito necessário para a reflexão é a **Introspecção (Introspection)**, no qual é possível ler informações sobre a
+aplicação em tempo real. A reflexão vai um passo além, permitindo também alterar tal informações.
+
+O padrão reflexão é geralmente utilizado por programas e bibliotecas que precisam examinar e alterar suas propriedades e
+comportamento em tempo de execução, como a **Java Virtual Machine (JVM)** e ferramentas de testes automatizados e debugging. Introspecção e, principalmente a reflexão, são técnicas e padrões considerados como mais avançados e devem ser
+utilizados com cuidado e quando se entende por completo os fundamentos da linguagem em questão.
+
+### Talk is cheap. Show me the code
+
+Em Python, a forma mais simples de obter informação sobre um objeto em tempo de execução é invocando o método `type()`.
+Veja que tal método permite apenas a introspecção, já que só permite ler, mas não alterar, o tipo de um objeto.
+
+Exemplos:
+
+```python
+>>> type(1)
+<class 'int'>
+
+>>> type(1.0)
+<class 'float'>
+
+>>> type(int)
+<class 'type'>
+
+>>> type([])
+<class 'list'>
+
+>>> type(type)
+<class 'type'>
+```
+Além disso, o método `isinstance()` pode ser usado para checar se um objeto é instância de uma determinada classe:
+
+```python
+>>> isinstance(1, int)
+True
+
+>>> isinstance(1.0, float)
+True
+
+>> isinstance(int, type)
+True
+
+>> isinstance([], list)
+True
+
+>> isinstance(type, type)
+True
+```
+
+Outras funções úteis para obter informações sobre objetos no Python são:
+
+- `hasattr()`: Checa se um objeto tem um determinado atributo.
+- `id()`: Obtém um ID unique de um objeto.
+- `dir()`: Obtém uma lista contendo todos os atributos e métodos de um objeto.
+- `vars()`: Obtém um dicionário de todas as variáveis de instância de um objeto
+- `callable()`: Checa se um objeto é um *callable*
+
+Se for necessário fazer uma instrospecção mais avançada, é possível utilizar o módulo built-in do Python [inspect](https://docs.python.org/3/library/inspect.html).
+
+Até o momento, só foi mostrado como realizar a introspecção no Python, ou seja, ler informações sobre objetos em tempo de
+execução. Porém, tal linguagem também permite alterar essas informações dinamicamente, alcançando assim a reflexão.
+
+Por exemplo, é possível adicionar atributos em objetos dinamicamente:
+
+```python
+>>> class A:
+    pass
+
+>>> A.x = 1
+
+>>> a = A()
+
+>>> a.y = 2
+
+>>> a.y
+2
+
+>>> a.x
+1
+```
+Por fim, também é possível adicionar métodos dinamicamente, através da função `setattr()`:
+
+```python
+>>> def init(self):
+    self.x = 1
+
+>>> class A:
+    pass
+
+>>> setattr(A, '__init__', init)
+
+>>> a = A()
+
+>>> a.x
+1
+```
+
+### Referências
+
+- [Reflection Architectural Pattern](http://software-pattern.org/Reflection).
+- [Understanding Reflection](https://www.oreilly.com/library/view/pattern-oriented-software-architecture/9781119963998/chap16-sec001.html).
+- [Python Reflection and Introspection](https://betterprogramming.pub/python-reflection-and-introspection-97b348be54d8).
+
 
 ## Programação defensiva
 TODO
