@@ -281,4 +281,125 @@ Por fim, também é possível adicionar métodos dinamicamente, através da fun�
 
 
 ## Programação defensiva
-TODO
+
+Programação defensiva é a prática de escrever programas que se preocupa com o funcionamento contínuo de tais programas
+mesmo em situações de uso inadequado. O princípio seguido na programação defensiva é o mesmo definido na Lei de Murphy:
+
+> Anything that can go wrong will go wrong, and at the worst possible time.
+
+Sendo assim, na programação defensiva, os componentes de software são projetados e implementados de maneira que antecipem
+o mal uso ou passagem de dados inválidos por parte de outros componentes de software ou usuários humanos. Portanto, a
+programação defensive estabelece uma prática ativa para a construção de software que seja mais tolerante a falhas,
+confiável e previsível, ou seja, de maior qualidade.
+
+Algumas das técnicas utilizadas na programação defensiva são:
+
+- Testes automatizados.
+- Checagem de dados de entrada inválidos.
+- Tratamento de exceções.
+- Logging.
+- Asserções.
+
+### Talk is cheap. Show me the code
+
+Uma das maneiras mais simples de programar defensivamente é utilizando-se de **asserções**. No Python, asserções são
+instruções que recebem uma expressão booleana como entrada e lançam a exceção `AssertionError` caso tal expressão seja
+avaliada como falsa. Caso seja verdadeira, a programa continuará a execução normalmente. Asserções são comumente utilizadas
+em testes unitários automatizados.
+
+Por exemplo, asserções poderiam ser utilizadas numa situação em que é necessário que uma lista contenha apenas números
+positivos:
+
+```python
+numbers = [1.5, 2.3, 0.7, -0.001, 4.4]
+total = 0.0
+for num in numbers:
+    assert num > 0.0, 'Data should only contain positive values'
+    total += num
+print('total is:', total)
+
+```
+
+O exemplo abaixo ilustra como uma asserção pode ser utilizada no contexto de automação de testes unitários de uma função
+que deve devolver uma string com o primeiro caractere em maiúsculo:
+
+```python
+def capital_case(x):
+    return x.capitalize()
+
+def test_capital_case():
+    assert capital_case('semaphore') == 'Semaphore
+```
+
+Outra técnica extremamente utilizadas programar defensivamente é o **tratamento de exceções**. Em Python, exceções são
+erros que detectados em tempo de execução. No exemplo abaixo, são demonstradas as ocorrências de três tipos de exceções,
+`ZeroDivisionError`,`NameError` e `TypeError`.
+
+```python
+>>> 10 * (1/0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+>>> 4 + spam*3
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'spam' is not defined
+>>> '2' + 2
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: can only concatenate str (not "int") to str
+```
+
+Para exemplificar o uso do tratamento de exceções, imagine que um programa recebe dois dados de entrada numéricos inteiros
+do usuário, para que seja realizada uma operação de divisão.
+
+Tal programa poderia ser escrito da seguinte maneira:
+
+```python
+dividend = int(input('Enter the dividend: '))
+divider = int(input('Enter the divisor: '))
+
+quotient = dividend / divisor
+```
+
+Porém, temos dois problemas que podem ser enderçados por meio da programação defensiva: o primeiro é que o usuário pode
+digitar valores que não sejam inteiros, e o segundo é que não há nenhuma validação se o segundo número recebido é
+diferente de zero.
+
+Fazendo-se o uso do tratamento de exceções para alcançar a programação defensiva, o programa poderia re-escrito para
+receber a entrada do usuário como abaixo:
+
+```python
+dividend: int
+divider : int
+quotient: float
+
+
+while True:
+    try:
+        dividend = int(input('Enter the dividend: '))
+    except ValueError:
+        print('Error: dividend must be an integer number. Please try it again.')
+    else:
+        break
+
+while True:
+    try:
+        divider = int(input('Enter the divisor: '))
+        quotient = dividend / divider
+    except ValueError:
+        print('Error: divider must be an integer number. Please try it again.')
+    except ZeroDivisionError:
+        print('Error: divider must be an integer number different than 0. Please try it again.')
+    else:
+        break
+
+print(quotient)
+```
+
+### Referências
+
+- [Defensive Programming in Python](https://www.pluralsight.com/guides/defensive-programming-in-python).
+- [Defensive Programming](https://swcarpentry.github.io/python-novice-inflammation/10-defensive/index.html).
+- [Good Design Practices with Python — Defensive Programming](https://medium.com/carbon-consulting/good-design-practices-with-python-defensive-programming-bc859fe084ea).
+- [Python Documentation - 8. Errors and Exceptions](https://docs.python.org/3/tutorial/errors.html).
