@@ -1,22 +1,40 @@
+import imp
 import uvicorn
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
+from starlette.staticfiles import StaticFiles
+from fastapi_restful.timing import add_timing_middleware, record_timing
 from sqlalchemy.orm import Session
 
+import logging
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
 models.Base.metadata.create_all(engine)
 
-app = FastAPI()
-
-
 # Dependência a ser injetada.
+
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+app = FastAPI()
+add_timing_middleware(app, record=logger.info, prefix='app')
+static_files_app = StaticFiles(directory='.')
+app.mount(path='/static', app=static_files_app, name='static')
+
+
+def start():
+    '''Launched with `poetry run start` at root level'''
+    uvicorn.run('project.src.main:app', host='0.0.0.0', port=8000, reload=True)
 
 
 @app.get('/')
@@ -54,12 +72,15 @@ def read_pais(pais_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status.HTTP_404_NOT_FOUND,
                             detail='País não encontrado')
 
+    print(type(db_pais))
+
     return db_pais
 
 
 @app.post('/estados/{pais_id}/', response_model=schemas.Estado)
 def create_estado_for_pais(
-    pais_id: int, estado: schemas.EstadoCreate, db: Session = Depends(get_db)
+    pais_id: int, estado: schemas.EstadoCreate, request: Request,
+    db: Session = Depends(get_db)
 ):
     # Check that pais actually exists.
     if crud.get_pais(db, pais_id=pais_id) is None:
@@ -68,21 +89,28 @@ def create_estado_for_pais(
             detail=f'Não existe país com o id {pais_id}'
         )
 
-    # Check that the estado.nome and estado.sigla is new for the estado.
-    if crud.get_estado_of_pais_by_nome(
-            db,
-            pais_id=pais_id,
-            estado_nome=estado.nome) or crud.get_estado_of_pais_by_sigla(
-            db,
-            pais_id=pais_id,
-            estado_sigla=estado.sigla):
+    record_timing(request, 'after checking that pais actually exists')
+
+    # Check that estado.nome and estado.sigla is new for pais_id.
+    if crud.is_estado_sigla_and_nome_new_for_pais(
+        db, estado.nome, estado.sigla, pais_id
+    ):
         raise HTTPException(
             status.HTTP_409_CONFLICT,
             detail=f'O pais de id {pais_id} já possui um estado chamado'
-                   f' {estado.nome} ou com sigla {estado.sigla}.'
+                   f' {estado.nome} ou com sigla {estado.sigla}'
         )
 
-    return crud.create_estado(db, estado=estado, pais_id=pais_id)
+    record_timing(
+        request,
+        'after checking that estado.nome and estado.sigla is new for country'
+    )
+
+    estado_db = crud.create_estado(db, estado=estado, pais_id=pais_id)
+
+    record_timing(request, 'after inserting estado into database')
+
+    return estado_db
 
 
 @app.get("/estados/", response_model=list[schemas.Estado])
@@ -149,23 +177,3 @@ def read_cidade(cidade_id: int, db: Session = Depends(get_db)):
         )
 
     return db_cidade
-
-
-def start():
-    '''Launched with `poetry run start` at root level'''
-    uvicorn.run('project.src.main:app', host='0.0.0.0', port=8000, reload=True)
-
-
-def capitalize(func):
-    def uppercase():
-        result = func()
-        return result.upper()
-    return uppercase
-
-
-@capitalize
-def say_hello():
-    return "hello"
-
-
-print(say_hello())  # 'HELLO'

@@ -73,8 +73,6 @@ def create_pais(pais: schemas.PaisCreate, db: Session = Depends(get_db)):
     return crud.create_pais(db, pais=pais)
 ```
 
-## Generics
-
 ## Closure
 
 Closure é uma técnica de programação proveniente do paradigma função que permite o acesso de
@@ -126,3 +124,17 @@ def read_pais(pais_id: int, db: Session = Depends(get_db)):
 ```
 
 ## Logging 
+
+Como podemos ver ao executar o a apliação, o servidor web assíncrono no qual o FastAPI é implementado,
+o **Uvicorn** já possui um mecanismo de logging implementado.
+
+![Mecanismo de loggin do servidor web Uvicorn](./img/uvicorn-logging.png)
+
+É possível realizar configurações básicas do mecanismo de logging do Uvicorn através da passagem
+de parâmetros ao método `uvicorn.run()`:
+
+```python
+uvicorn.run('project.src.main:app', host='0.0.0.0', port=8000, reload=True, log_level='warning', log_config=...)
+```
+
+
