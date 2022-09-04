@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "project"
+version = "0.1.0"
+description = ""
+authors = ["Karlos Daniel Pires da Silva <karlosdanielsilva7654@gmail.com>"]
+
+[tool.poetry.scripts]
+start = "project.src.main:start"
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.79.0"
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+SQLAlchemy = "^1.4.40"
+psycopg2-binary = "^2.9.3"
+fastapi-restful = "^0.4.3"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

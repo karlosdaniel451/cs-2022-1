@@ -1,0 +1,25 @@
+Runtime config:
+https://www.baeldung.com/spring-profiles
+https://www.baeldung.com/inversion-control-and-dependency-injection-in-spring
+
+clusure
+https://www.geeksforgeeks.org/closures-in-java-with-examples/
+java magazine 62
+https://receitasdecodigo.com.br/java/exemplo-de-foreach-do-java-8
+https://www.devmedia.com.br/como-usar-funcoes-lambda-em-java/32826
+
+
+Generics
+https://www.devmedia.com.br/usando-generics-em-java/28981
+https://www.devmedia.com.br/java-generics-trabalhando-com-metodos/30911
+http://rbittencourt.com/introducao-a-generics/
+https://howtodoinjava.com/java/generics/complete-java-generics-tutorial/
+
+
+logging
+https://www.loggly.com/ultimate-guide/java-logging-basics/
+https://www.journaldev.com/977/logger-in-java-logging-example
+https://www.edureka.co/blog/logger-in-java
+
+
+
